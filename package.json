@@ -1,6 +1,6 @@
 {
   "name": "ml4js",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A scikit-learn inspired machine learning toolkit for Node.js and TypeScript.",
   "type": "module",
   "main": "./dist/index.js",
@@ -17,6 +17,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf dist coverage tests/.tmp tests/**/*.js tests/**/*.js.map tests/**/*.d.ts tests/**/*.d.ts.map",
+    "example:build": "tsc -p tsconfig.examples.json",
+    "example:classification": "npm run example:build && node ./dist-examples/examples/classification.js",
+    "example:clustering": "npm run example:build && node ./dist-examples/examples/clustering.js",
+    "example:regression": "npm run example:build && node ./dist-examples/examples/regression.js",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",

@@ -1,6 +1,8 @@
 .DS_Store
 node_modules/
 dist/
+dist-examples/
 coverage/
+examples/output/
 tests/.tmp/
 npm-debug.log*

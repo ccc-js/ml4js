@@ -1,0 +1,4 @@
+dist/
+dist-examples/
+coverage/
+examples/output/
