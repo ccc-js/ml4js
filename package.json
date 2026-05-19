@@ -1,6 +1,6 @@
 {
   "name": "ml4js",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A scikit-learn inspired machine learning toolkit for Node.js and TypeScript.",
   "type": "module",
   "main": "./dist/index.js",

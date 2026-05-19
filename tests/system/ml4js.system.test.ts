@@ -5,10 +5,14 @@ import { describe, expect, test } from 'vitest';
 import {
   accuracyScore,
   createClassificationFigure,
+  createClusterFigure,
   createPredictionFigure,
+  KMeans,
   LinearRegression,
   LogisticRegression,
+  makeBlobs,
   meanSquaredError,
+  PCA,
   makeClassification,
   PolynomialFeatures,
   Pipeline,
@@ -86,5 +90,36 @@ describe('ml4js system flow', () => {
     const html = await readFile(outputPath, 'utf8');
     expect(html).toContain('Plotly.newPlot');
     expect(html).toContain('ml4js v0.4 classification');
+  });
+
+  test('runs blob generation, pca projection, clustering, and plot export', async () => {
+    const { features } = makeBlobs({
+      nSamples: 45,
+      centers: 3,
+      nFeatures: 3,
+      seed: 11
+    });
+
+    const projected = new PCA(2).fitTransform(features);
+    const kmeans = new KMeans(3);
+    kmeans.fit(projected);
+    const labels = kmeans.predict(projected);
+
+    expect(labels).toHaveLength(projected.length);
+    expect(new Set(labels).size).toBe(3);
+
+    const figure = createClusterFigure(
+      projected,
+      labels,
+      'ml4js v0.5 clustering'
+    );
+    const outputPath = './tests/.tmp/clustering-demo.html';
+
+    await writePlotlyHtml(outputPath, figure);
+    await access(outputPath);
+
+    const html = await readFile(outputPath, 'utf8');
+    expect(html).toContain('Plotly.newPlot');
+    expect(html).toContain('ml4js v0.5 clustering');
   });
 });

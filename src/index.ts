@@ -10,16 +10,21 @@ export type {
   Vector
 } from './base.js';
 export { Ml4jsError } from './errors.js';
+export { KMeans } from './cluster/KMeans.js';
+export type { KMeansOptions } from './cluster/KMeans.js';
 export { makeClassification } from './datasets/makeClassification.js';
 export type {
   ClassificationDataset,
   MakeClassificationOptions
 } from './datasets/makeClassification.js';
+export { makeBlobs } from './datasets/makeBlobs.js';
+export type { BlobDataset, MakeBlobsOptions } from './datasets/makeBlobs.js';
 export { makeRegression } from './datasets/makeRegression.js';
 export type {
   MakeRegressionOptions,
   RegressionDataset
 } from './datasets/makeRegression.js';
+export { PCA } from './decomposition/PCA.js';
 export { LinearRegression } from './linear_model/LinearRegression.js';
 export type { LinearRegressionOptions } from './linear_model/LinearRegression.js';
 export { LogisticRegression } from './linear_model/LogisticRegression.js';
@@ -41,6 +46,7 @@ export type { PipelineStep, PipelineTransformer } from './pipeline/Pipeline.js';
 export { PolynomialFeatures } from './preprocessing/PolynomialFeatures.js';
 export { StandardScaler } from './preprocessing/StandardScaler.js';
 export { createClassificationFigure } from './plotting/classification.js';
+export { createClusterFigure } from './plotting/unsupervised.js';
 export {
   createPredictionFigure,
   createRegressionFigure,
