@@ -9,6 +9,11 @@ export type {
   Vector
 } from './base.js';
 export { Ml4jsError } from './errors.js';
+export { makeRegression } from './datasets/makeRegression.js';
+export type {
+  MakeRegressionOptions,
+  RegressionDataset
+} from './datasets/makeRegression.js';
 export { LinearRegression } from './linear_model/LinearRegression.js';
 export type { LinearRegressionOptions } from './linear_model/LinearRegression.js';
 export { trainTestSplit } from './model_selection/trainTestSplit.js';
@@ -20,8 +25,10 @@ export {
 } from './metrics/regression.js';
 export { Pipeline } from './pipeline/Pipeline.js';
 export type { PipelineStep, PipelineTransformer } from './pipeline/Pipeline.js';
+export { PolynomialFeatures } from './preprocessing/PolynomialFeatures.js';
 export { StandardScaler } from './preprocessing/StandardScaler.js';
 export {
+  createPredictionFigure,
   createRegressionFigure,
   renderPlotlyHtml,
   writePlotlyHtml

@@ -76,6 +76,47 @@ export function createRegressionFigure(
   };
 }
 
+export function createPredictionFigure(
+  actual: Vector,
+  predicted: Vector,
+  title = 'Actual vs Predicted'
+): PlotlyFigure {
+  if (actual.length === 0 || predicted.length === 0) {
+    throw new Ml4jsError('Plot inputs must not be empty.');
+  }
+
+  if (actual.length !== predicted.length) {
+    throw new Ml4jsError('Plot inputs must have the same length.');
+  }
+
+  const minimum = Math.min(...actual, ...predicted);
+  const maximum = Math.max(...actual, ...predicted);
+
+  return {
+    data: [
+      {
+        x: actual,
+        y: predicted,
+        mode: 'markers',
+        type: 'scatter',
+        name: 'Predictions'
+      },
+      {
+        x: [minimum, maximum],
+        y: [minimum, maximum],
+        mode: 'lines',
+        type: 'scatter',
+        name: 'Ideal Fit'
+      }
+    ],
+    layout: {
+      title,
+      xaxis: { title: 'Actual' },
+      yaxis: { title: 'Predicted' }
+    }
+  };
+}
+
 export function renderPlotlyHtml(figure: PlotlyFigure): string {
   return `<!DOCTYPE html>
 <html lang="en">

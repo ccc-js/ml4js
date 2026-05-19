@@ -1,19 +1,12 @@
 import type { Matrix, TrainTestSplitResult, Vector } from '../base.js';
 import { Ml4jsError } from '../errors.js';
 import { assertMatchingSamples } from '../math/matrix.js';
+import { createRandomGenerator } from '../random.js';
 
 export interface TrainTestSplitOptions {
   testSize?: number;
   shuffle?: boolean;
   seed?: number;
-}
-
-function createRandomGenerator(seed: number): () => number {
-  let state = seed >>> 0;
-  return () => {
-    state = (1664525 * state + 1013904223) >>> 0;
-    return state / 2 ** 32;
-  };
 }
 
 function shuffleIndices(length: number, seed: number): number[] {
