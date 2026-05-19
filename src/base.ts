@@ -20,3 +20,10 @@ export interface Transformer {
   transform(features: Matrix): Matrix;
   fitTransform(features: Matrix): Matrix;
 }
+
+export interface TrainTestSplitResult {
+  xTrain: Matrix;
+  xTest: Matrix;
+  yTrain: Vector;
+  yTest: Vector;
+}

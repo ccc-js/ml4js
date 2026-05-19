@@ -6,29 +6,37 @@ import {
   createRegressionFigure,
   LinearRegression,
   meanSquaredError,
+  Pipeline,
   StandardScaler,
+  trainTestSplit,
   writePlotlyHtml
 } from '../../src/index.js';
 
 describe('ml4js system flow', () => {
-  test('runs preprocessing, training, scoring, and plot export', async () => {
-    const features = [[1], [2], [3], [4], [5], [6]];
-    const target = [5, 7, 9, 11, 13, 15];
+  test('runs split, preprocessing, training, scoring, and plot export', async () => {
+    const features = [[1], [2], [3], [4], [5], [6], [7], [8]];
+    const target = [5, 7, 9, 11, 13, 15, 17, 19];
 
-    const scaler = new StandardScaler();
-    const scaledFeatures = scaler.fitTransform(features);
+    const { xTrain, xTest, yTrain, yTest } = trainTestSplit(features, target, {
+      testSize: 0.25,
+      shuffle: false
+    });
 
-    const model = new LinearRegression();
-    model.fit(scaledFeatures, target);
+    const pipeline = new Pipeline(
+      [{ name: 'scale', transformer: new StandardScaler() }],
+      new LinearRegression()
+    );
+    pipeline.fit(xTrain, yTrain);
 
-    const predictions = model.predict(scaledFeatures);
-    expect(meanSquaredError(target, predictions)).toBeLessThan(1e-8);
+    const predictions = pipeline.predict(xTest);
+    expect(meanSquaredError(yTest, predictions)).toBeLessThan(1e-8);
+    expect(pipeline.score(xTest, yTest)).toBeCloseTo(1);
 
     const figure = createRegressionFigure(
-      features.map((row) => row[0] ?? 0),
-      target,
+      xTest.map((row) => row[0] ?? 0),
+      yTest,
       predictions,
-      'ml4js v0.1 demo'
+      'ml4js v0.2 demo'
     );
     const outputPath = './tests/.tmp/regression-demo.html';
 
@@ -37,6 +45,6 @@ describe('ml4js system flow', () => {
 
     const html = await readFile(outputPath, 'utf8');
     expect(html).toContain('Plotly.newPlot');
-    expect(html).toContain('ml4js v0.1 demo');
+    expect(html).toContain('ml4js v0.2 demo');
   });
 });
