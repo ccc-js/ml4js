@@ -15,6 +15,8 @@ export interface Scorable {
 
 export interface Regressor extends Estimator, Predictor, Scorable {}
 
+export interface Classifier extends Estimator, Predictor, Scorable {}
+
 export interface Transformer {
   fit(features: Matrix): this;
   transform(features: Matrix): Matrix;

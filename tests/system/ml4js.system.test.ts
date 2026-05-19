@@ -3,9 +3,13 @@ import { access, readFile } from 'node:fs/promises';
 import { describe, expect, test } from 'vitest';
 
 import {
+  accuracyScore,
+  createClassificationFigure,
   createPredictionFigure,
   LinearRegression,
+  LogisticRegression,
   meanSquaredError,
+  makeClassification,
   PolynomialFeatures,
   Pipeline,
   makeRegression,
@@ -50,5 +54,37 @@ describe('ml4js system flow', () => {
     const html = await readFile(outputPath, 'utf8');
     expect(html).toContain('Plotly.newPlot');
     expect(html).toContain('ml4js v0.3 demo');
+  });
+
+  test('runs classification training, scoring, and plot export', async () => {
+    const { features, target } = makeClassification({
+      nSamples: 40,
+      nFeatures: 2,
+      seed: 9
+    });
+    const { xTrain, xTest, yTrain, yTest } = trainTestSplit(features, target, {
+      testSize: 0.25,
+      seed: 5
+    });
+
+    const model = new LogisticRegression();
+    model.fit(xTrain, yTrain);
+    const predictions = model.predict(xTest);
+
+    expect(accuracyScore(yTest, predictions)).toBeGreaterThan(0.9);
+
+    const figure = createClassificationFigure(
+      xTest,
+      predictions,
+      'ml4js v0.4 classification'
+    );
+    const outputPath = './tests/.tmp/classification-demo.html';
+
+    await writePlotlyHtml(outputPath, figure);
+    await access(outputPath);
+
+    const html = await readFile(outputPath, 'utf8');
+    expect(html).toContain('Plotly.newPlot');
+    expect(html).toContain('ml4js v0.4 classification');
   });
 });
